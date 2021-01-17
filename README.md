@@ -1,5 +1,7 @@
 # JobHunt
 
+### [Live Demo](https://nehalmahida.github.io/JobHunt/)
+
 ## Project setup
 ```
 npm install
