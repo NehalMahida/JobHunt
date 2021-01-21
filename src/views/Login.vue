@@ -7,14 +7,14 @@
           <v-text-field
             v-model="email"
             label="Email"
-            :rules="emailRules"
+            :rules="[required('email'), emailPattern()]"
             required
           ></v-text-field>
 
           <v-text-field
             type="password"
             v-model="password"
-            :rules="passwordRules"
+            :rules="[required('password'), passwordPattern()]"
             label="Password"
             required
           ></v-text-field>
@@ -35,25 +35,13 @@
 
 <script>
 import { eventBus } from "../main";
+import validations from "../utilities/validations";
 
 export default {
   data: () => ({
     email: "",
     password: "",
-    emailRules: [
-      (v) => !!v || "Email is required",
-      (v) =>
-        /^([a-zA-Z0-9_\-.]+)@([a-zA-Z0-9_\-.]+)\.([a-zA-Z]{2,5})$/.test(v) ||
-        "Email is not valid",
-    ],
-    passwordRules: [
-      (v) => !!v || "Password is required",
-      (v) =>
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
-          v
-        ) ||
-        "Password must contain at least 1 upper, 1 lower, 1 special char and numbers",
-    ],
+    ...validations,
   }),
   methods: {
     submit() {
@@ -70,10 +58,12 @@ export default {
       }
     },
   },
-  created() {
+  beforeRouteEnter(from, to, next) {
     const user = localStorage.getItem("user");
     if (user) {
-      this.$router.push("/");
+      next("/");
+    } else {
+      next(true);
     }
   },
 };

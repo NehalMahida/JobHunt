@@ -153,7 +153,6 @@ export default {
           // stop loading effect.
           this.loading = false;
           this.Jobitems = result.data;
-          console.log(this.Jobitems);
         })
         .catch((error) => {
           this.loading = false;
