@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex flex-column justify-space-between align-center">
-    <v-img :src="require('../assets/no-search-result.jpg')"></v-img>
+    <v-img :src="require('@/app/assets/no-search-result.jpg')"></v-img>
   </div>
 </template>
 

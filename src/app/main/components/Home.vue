@@ -1,14 +1,16 @@
 <template>
   <div class="home">
     <v-img
-      :src="require('../assets/jobhunt.jpg')"
+      :src="require('@/app/assets/jobhunt.jpg')"
       height="50vh"
       class="d-flex align-center justify-center"
       gradient="to top right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.5)"
     >
       <div class="text-center white--text --darken-2">
-        <h1>Welcome To JobHunt</h1>
-        <p>
+        <p class="text-lg-h2 text-md-h3 text-sm-h4 text-h5 font-weight-medium">
+          Welcome To JobHunt
+        </p>
+        <p class="text-md-subtitle-1 text-sm-subtitle-2 text-body-2">
           Lorem, ipsum dolor sit amet consectetur adipisicing elit.
         </p>
       </div>
@@ -18,17 +20,23 @@
             Register
           </v-btn>
         </router-link>
-        <h2 v-if="loginUser" class="white--text">Hello, {{ userName }}</h2>
+        <h2
+          v-if="loginUser"
+          class="white--text font-weight-bold text-sm-h5 text-h6"
+        >
+          Hello, {{ userName }}
+        </h2>
       </div>
     </v-img>
 
     <v-card elevation="2" outlined>
-      <h1 class="text-center my-5">Find Jobs</h1>
+      <p class="text-center my-5 text-lg-h4 text-md-h5 text-sm-h6 text-h6">
+        Find Jobs
+      </p>
     </v-card>
-
     <v-row class="grey lighten-3 pb-16 d-flex flex-row justify-center">
       <v-col cols="10" md="3" sm="6" class="mt-15 pa-0">
-        <h2>Search Here</h2>
+        <h2 class="text-lg-h5 text-md-h6 text-sm-h6 text-h6">Search Here</h2>
         <hr class="mt-5 mb-5" />
         <v-form ref="form" @submit.prevent="submit">
           <v-card elevation="2" outlined>
@@ -57,9 +65,18 @@
       </v-col>
 
       <v-col cols="10" md="7" sm="10" class="mt-15 mx-16 pa-0">
-        <h2 v-if="loading">Loading...</h2>
-        <h2 v-else-if="Jobitems.length">Showing {{ Jobitems.length }} jobs</h2>
-        <h2 v-else>Nothing found</h2>
+        <h2 v-if="loading" class="text-lg-h5 text-md-h6 text-sm-h6 text-h6">
+          Loading...
+        </h2>
+        <h2
+          v-else-if="Jobitems.length"
+          class="text-lg-h5 text-md-h6 text-sm-h6 text-h6"
+        >
+          Showing {{ Jobitems.length }} jobs
+        </h2>
+        <h2 v-else class="text-lg-h5 text-md-h6 text-sm-h6 text-h6">
+          Nothing found
+        </h2>
         <hr class="mt-5 mb-5" />
         <div class="text-center">
           <v-progress-circular indeterminate color="primary" v-if="loading" />
@@ -68,7 +85,7 @@
           <v-img
             max-width="200px"
             max-height="200px"
-            :src="require('../assets/not-found.svg')"
+            :src="require('@/app/assets/not-found.svg')"
             v-if="!loading && !Jobitems.length"
           />
         </div>
@@ -83,24 +100,20 @@
                   {{ item.company }} | {{ item.type }}
                 </v-card-subtitle>
               </div>
-              <div>
-                <v-card-title class="black--text font-weight-regular ">
+              <div class="text-right">
+                <v-card-title class="black--text font-weight-regular">
                   {{ item.location }}
                 </v-card-title>
-                <v-card-subtitle class="">
+                <v-card-subtitle>
                   {{ item.created_at }}
                 </v-card-subtitle>
               </div>
             </v-row>
             <v-card-actions>
-              <v-btn
-                :disabled="!loginUser"
-                color="green darken-1"
-                text
-                :href="item.url"
-                target="_blank"
-              >
-                Apply
+              <v-btn :disabled="!loginUser" color="green darken-1" text>
+                <router-link :to="'/positions/' + item.id" tag="div">
+                  Details
+                </router-link>
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -114,7 +127,7 @@
 import Vue from "vue";
 import axios from "axios";
 import VueAxios from "vue-axios";
-import { eventBus } from "../main";
+import { eventBus } from "@/main";
 Vue.use(VueAxios, axios);
 
 export default {
@@ -126,8 +139,8 @@ export default {
     Jobitems: [],
     jobDescription: "",
     location: "",
-    jobRules: [(v) => !!v || "Job Description is required"],
-    locationRules: [(v) => !!v || "Location is required"],
+    jobRules: [v => !!v || "Job Description is required"],
+    locationRules: [v => !!v || "Location is required"]
   }),
   methods: {
     submit() {
@@ -149,17 +162,18 @@ export default {
             "&full_time=true&location=" +
             location
         )
-        .then((result) => {
+        .then(result => {
           // stop loading effect.
+          //console.log(result);
           this.loading = false;
           this.Jobitems = result.data;
         })
-        .catch((error) => {
+        .catch(error => {
           this.loading = false;
           alert("Too many requests, Please try later!!");
           console.log(error.message);
         });
-    },
+    }
   },
   created() {
     this.fetchJobs("python", "usa");
@@ -167,10 +181,10 @@ export default {
     if (this.loginUser) {
       this.userName = JSON.parse(localStorage.getItem(this.loginUser)).name;
     }
-    eventBus.$on("logoutUser", (status) => {
+    eventBus.$on("logoutUser", status => {
       this.loginUser = status;
     });
-  },
+  }
 };
 </script>
 <style scoped>

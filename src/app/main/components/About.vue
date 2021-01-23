@@ -1,5 +1,5 @@
 <template>
-  <div class="grey lighten-3 pb-16">
+  <div class="grey lighten-3 fill-height">
     <v-container>
       <h2 class="text--grey text--darken-1 font-weight-regular">About Us</h2>
       <div class="white pa-5 mt-4">

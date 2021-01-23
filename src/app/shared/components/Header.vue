@@ -31,34 +31,34 @@
         v-if="!loginUser"
         >Login</router-link
       >
-      <h3 v-if="loginUser" @click="logout" class="pointer">LogOut</h3>
+      <h3 v-if="loginUser" @click="logout" class="pointer">Logout</h3>
     </div>
   </v-app-bar>
 </template>
 
 <script>
-import { eventBus } from "../main";
+import { eventBus } from "@/main";
 
 export default {
   data: () => ({
-    loginUser: false,
+    loginUser: false
   }),
   methods: {
     logout() {
       localStorage.setItem("user", "");
       this.loginUser = "";
       eventBus.$emit("logoutUser", false);
-    },
+    }
   },
   created() {
     const user = localStorage.getItem("user");
     if (user) {
       this.loginUser = user;
     }
-    eventBus.$on("userLogin", (email) => {
+    eventBus.$on("userLogin", email => {
       this.loginUser = email;
     });
-  },
+  }
 };
 </script>
 
